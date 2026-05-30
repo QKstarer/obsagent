@@ -10,7 +10,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from typing import Optional
 from config import VAULT_PATH
-from locale import t
+from locale import t, _load_all as _init_locale
 from indexer import index_vault
 from vectorstore import add_documents, get_stats, clear_all, rebuild_keyword_index
 from retriever import retrieve_for_chat, search
@@ -203,6 +203,9 @@ def _run_async(coro):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Startup — init locale
+    _init_locale()
+
     # Startup — validate vault path
     if not VAULT_PATH or not os.path.isdir(VAULT_PATH):
         print(f"[STARTUP] WARNING: VAULT_PATH not set or invalid: '{VAULT_PATH}'", flush=True)
