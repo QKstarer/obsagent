@@ -1,6 +1,6 @@
 import httpx
 from typing import List, Dict, Generator, Optional
-from config import OLLAMA_BASE, OLLAMA_LLM, SILICONFLOW_API, SILICONFLOW_KEY, SILICONFLOW_LLM_MODEL, LLM_PROVIDER
+from config import OLLAMA_BASE, OLLAMA_LLM, SILICONFLOW_API, SILICONFLOW_KEY, SILICONFLOW_LLM_MODEL, LLM_PROVIDER, DEEPSEEK_API, DEEPSEEK_KEY, DEEPSEEK_MODEL
 
 SYSTEM_PROMPT = """你是一个基于知识库的智能助手。你的唯一知识来源是下方提供的【知识库内容】。
 
@@ -60,6 +60,19 @@ async def chat_siliconflow(messages: List[Dict]) -> str:
         return resp.json()["choices"][0]["message"]["content"]
 
 
+async def chat_deepseek(messages: List[Dict]) -> str:
+    if not DEEPSEEK_KEY:
+        raise ValueError("DEEPSEEK_KEY 未配置，请设置环境变量 DEEPSEEK_KEY")
+    async with httpx.AsyncClient(timeout=120) as client:
+        resp = await client.post(f"{DEEPSEEK_API}/chat/completions", json={
+            "model": DEEPSEEK_MODEL,
+            "messages": messages,
+            "stream": False
+        }, headers={"Authorization": f"Bearer {DEEPSEEK_KEY}"})
+        resp.raise_for_status()
+        return resp.json()["choices"][0]["message"]["content"]
+
+
 async def chat(context: str, user_query: str) -> str:
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
@@ -68,13 +81,18 @@ async def chat(context: str, user_query: str) -> str:
 
     if LLM_PROVIDER == "siliconflow":
         return await chat_siliconflow(messages)
+    elif LLM_PROVIDER == "deepseek":
+        return await chat_deepseek(messages)
     elif LLM_PROVIDER == "ollama":
         return await chat_ollama(messages)
     else:  # auto
         try:
             return await chat_ollama(messages)
         except Exception:
-            return await chat_siliconflow(messages)
+            try:
+                return await chat_siliconflow(messages)
+            except Exception:
+                return await chat_deepseek(messages)
 
 
 async def chat_stream(context: str, user_query: str) -> Generator[str, None, None]:
@@ -86,6 +104,9 @@ async def chat_stream(context: str, user_query: str) -> Generator[str, None, Non
     if LLM_PROVIDER == "siliconflow":
         result = await chat_siliconflow(messages)
         yield result
+    elif LLM_PROVIDER == "deepseek":
+        result = await chat_deepseek(messages)
+        yield result
     elif LLM_PROVIDER == "ollama":
         async for chunk in chat_ollama_stream(messages):
             yield chunk
@@ -94,5 +115,9 @@ async def chat_stream(context: str, user_query: str) -> Generator[str, None, Non
             async for chunk in chat_ollama_stream(messages):
                 yield chunk
         except Exception:
-            result = await chat_siliconflow(messages)
-            yield result
+            try:
+                result = await chat_siliconflow(messages)
+                yield result
+            except Exception:
+                result = await chat_deepseek(messages)
+                yield result

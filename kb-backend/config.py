@@ -15,11 +15,17 @@ SILICONFLOW_KEY = os.environ.get("SILICONFLOW_KEY", "")
 SILICONFLOW_EMBED_MODEL = os.environ.get("SILICONFLOW_EMBED_MODEL", "BAAI/bge-m3")
 SILICONFLOW_LLM_MODEL = os.environ.get("SILICONFLOW_LLM_MODEL", "deepseek-ai/DeepSeek-R1")
 
+# ─── DeepSeek (云端直连) ───
+DEEPSEEK_API = os.environ.get("DEEPSEEK_API", "https://api.deepseek.com")
+DEEPSEEK_KEY = os.environ.get("DEEPSEEK_KEY", "")
+DEEPSEEK_MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-chat")
+
 # ─── 模型选择策略 ───
-# 可选值: "ollama" | "siliconflow" | "auto"
-# ollama     — 仅用本地 Ollama
+# 可选值: "ollama" | "siliconflow" | "deepseek" | "auto"
+# ollama      — 仅用本地 Ollama
 # siliconflow — 仅用 SiliconFlow 云端
-# auto       — 优先 Ollama，失败回退 SiliconFlow（默认）
+# deepseek    — 仅用 DeepSeek 官方 API
+# auto        — 优先 Ollama，失败回退 SiliconFlow → DeepSeek（默认）
 LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "auto")
 
 # ─── 推荐模型配置 ───
