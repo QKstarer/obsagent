@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KB Assistant - Obsidian 知识库助手</title>
+    <meta name="description" content="基于本地大语言模型的 Obsidian 知识库智能问答插件。RAG检索 + ChromaDB向量搜索 + Ollama本地推理。">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -382,6 +383,16 @@
             <h3>快速捕获</h3>
             <p>收件箱模式，快速记录灵感和想法，后续自动分类整理。</p>
         </div>
+        <div class="feature-card">
+            <div class="feature-icon">🔄</div>
+            <h3>模型热切换</h3>
+            <p>支持 Ollama 本地 + SiliconFlow 云端，环境变量一键切换模型，无需改代码。</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3>安全加固</h3>
+            <p>CORS 来源限制、输入编码兼容（UTF-8/GBK）、健康检查端点，生产可用。</p>
+        </div>
     </div>
 </section>
 
@@ -448,6 +459,16 @@
             <h4>Python 3.9+</h4>
             <p>后端语言</p>
         </div>
+        <div class="stack-item">
+            <div class="icon">🛡️</div>
+            <h4>CORS 安全</h4>
+            <p>来源限制</p>
+        </div>
+        <div class="stack-item">
+            <div class="icon">💓</div>
+            <h4>Health Check</h4>
+            <p>/api/health</p>
+        </div>
     </div>
 </section>
 
@@ -501,6 +522,23 @@
                 <td><span class="tag tag-strong">更精确</span></td>
                 <td>1024维，更高检索精度</td>
             </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-top:2rem; padding:1.5rem; background:var(--bg-card); border:1px solid var(--border); border-radius:12px;">
+        <h3 style="margin-bottom:0.8rem;">⚡ 一键切换</h3>
+        <div class="code-block" style="margin:0">
+# 仅用本地 Ollama<br>
+set LLM_PROVIDER=ollama<br>
+<br>
+# 仅用云端 SiliconFlow<br>
+set LLM_PROVIDER=siliconflow<br>
+set SILICONFLOW_KEY=你的密钥<br>
+<br>
+# 自动模式（优先本地，失败回云端）<br>
+set LLM_PROVIDER=auto
+        </div>
+    </div>
         </tbody>
     </table>
 </section>
