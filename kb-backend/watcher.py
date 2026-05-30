@@ -4,6 +4,7 @@ import threading
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from config import VAULT_PATH
+from locale import t
 
 skip_dirs = {'.obsidian', '.update_backup', '.git', 'node_modules', 'kb-backend', 'kb-plugin'}
 debounce_delay = 10
@@ -46,14 +47,14 @@ class VaultHandler(FileSystemEventHandler):
             return
         from embeddings import embed_progress
         if embed_progress.get("running"):
-            print("[WATCHER] Skipping - indexing in progress", flush=True)
+            print(f"[WATCHER] {t('watcher_skip')}", flush=True)
             return
 
         # Incremental update: only process changed files
         from vectorstore import remove_by_source, add_documents
         from indexer import index_single_file
 
-        print(f"[WATCHER] Incremental update for {len(to_process)} files...", flush=True)
+        print(f"[WATCHER] {t('watcher_update', count=len(to_process))}", flush=True)
         for file_path in to_process:
             try:
                 rel_path = os.path.relpath(file_path, VAULT_PATH).replace('\\', '/')
@@ -63,9 +64,9 @@ class VaultHandler(FileSystemEventHandler):
                 documents = index_single_file(file_path)
                 if documents:
                     add_documents(documents)
-                    print(f"[WATCHER] Updated: {rel_path} ({len(documents)} chunks)", flush=True)
+                    print(f"[WATCHER] {t('watcher_updated', path=rel_path, count=len(documents))}", flush=True)
             except Exception as e:
-                print(f"[WATCHER] Error updating {file_path}: {e}", flush=True)
+                print(f"[WATCHER] {t('watcher_error', path=file_path, error=e)}", flush=True)
 
         # Content-aware processing for new files
         for path in to_process:
@@ -116,7 +117,7 @@ class VaultHandler(FileSystemEventHandler):
             from vectorstore import remove_by_source
             rel = os.path.relpath(event.src_path, VAULT_PATH).replace('\\', '/')
             remove_by_source(rel)
-            print(f"[WATCHER] Removed: {rel}", flush=True)
+            print(f"[WATCHER] {t('watcher_removed', path=rel)}", flush=True)
 
     def on_moved(self, event):
         if not event.is_directory:
@@ -134,12 +135,12 @@ _observer = None
 
 def pause_watcher():
     _paused.clear()
-    print("[WATCHER] Paused", flush=True)
+    print(f"[WATCHER] {t('watcher_paused')}", flush=True)
 
 
 def resume_watcher():
     _paused.set()
-    print("[WATCHER] Resumed", flush=True)
+    print(f"[WATCHER] {t('watcher_resumed')}", flush=True)
 
 
 def start_watcher():
@@ -151,7 +152,7 @@ def start_watcher():
     _observer.schedule(handler, VAULT_PATH, recursive=True)
     _observer.daemon = True
     _observer.start()
-    print(f"[WATCHER] Started", flush=True)
+    print(f"[WATCHER] {t('watcher_started')}", flush=True)
 
 
 def stop_watcher():
@@ -159,4 +160,4 @@ def stop_watcher():
     if _observer and _observer.is_alive():
         _observer.stop()
         _observer.join(timeout=5)
-        print("[WATCHER] Stopped", flush=True)
+        print(f"[WATCHER] {t('watcher_stopped')}", flush=True)

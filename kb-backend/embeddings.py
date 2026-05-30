@@ -4,6 +4,7 @@ import time
 from typing import List
 from concurrent.futures import ThreadPoolExecutor
 from config import OLLAMA_BASE, OLLAMA_EMBED
+from locale import t
 
 embed_progress = {"done": 0, "total": 0, "running": False}
 
@@ -35,7 +36,7 @@ def get_embeddings_batch_sync(texts: List[str]) -> List[List[float]]:
             d = embed_progress["done"]
             t = embed_progress["total"]
             if d % 10 == 0 or d == t:
-                print(f"  [EMBED] {d}/{t} ({d*100//t}%)", flush=True)
+                print(f"  {t('embed_progress', done=d, total=t, percent=d*100//t)}", flush=True)
 
     # Use 2 workers - Ollama CPU handles ~1 concurrent request well
     with ThreadPoolExecutor(max_workers=2) as pool:
@@ -44,7 +45,7 @@ def get_embeddings_batch_sync(texts: List[str]) -> List[List[float]]:
             f.result()
 
     embed_progress["running"] = False
-    print(f"  [EMBED] ALL DONE: {len(texts)} chunks", flush=True)
+    print(f"  {t('embed_done', count=len(texts))}", flush=True)
     return results
 
 

@@ -10,6 +10,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from typing import Optional
 from config import VAULT_PATH
+from locale import t
 from indexer import index_vault
 from vectorstore import add_documents, get_stats, clear_all, rebuild_keyword_index
 from retriever import retrieve_for_chat, search
@@ -125,16 +126,16 @@ def _background_index():
     try:
         indexing_status["running"] = True
         pause_watcher()
-        print("[INDEX] Starting background indexing...", flush=True)
+        print(f"[INDEX] {t('index_start')}", flush=True)
         documents = index_vault()
-        print(f"[INDEX] Chunks found: {len(documents)}, generating embeddings...", flush=True)
+        print(f"[INDEX] {t('index_chunks', count=len(documents))}", flush=True)
         count = add_documents(documents)
         indexing_status["chunks"] = count
         indexing_status["done"] = True
-        print(f"[INDEX] Done: {count} chunks indexed", flush=True)
+        print(f"[INDEX] {t('index_done', count=count)}", flush=True)
     except Exception as e:
         indexing_status["error"] = str(e)
-        print(f"[INDEX] Error: {e}", flush=True)
+        print(f"[INDEX] {t('index_error', error=e)}", flush=True)
     finally:
         indexing_status["running"] = False
         resume_watcher()
@@ -210,16 +211,16 @@ async def lifespan(app: FastAPI):
         stats = get_stats()
         total = stats.get("total_chunks", 0)
         if total == 0:
-            print("[STARTUP] ChromaDB empty, starting background indexing...", flush=True)
-            t = threading.Thread(target=_background_index, daemon=True)
-            t.start()
+            print(f"[STARTUP] {t('vault_empty')}", flush=True)
+            _t = threading.Thread(target=_background_index, daemon=True)
+            _t.start()
         else:
-            print(f"[STARTUP] ChromaDB has {total} chunks, rebuilding keyword index...", flush=True)
+            print(f"[STARTUP] {t('vault_loaded', count=total)}", flush=True)
             threading.Thread(target=rebuild_keyword_index, daemon=True).start()
     except Exception as e:
-        print(f"[STARTUP] ChromaDB init error: {e}, will re-index", flush=True)
-        t = threading.Thread(target=_background_index, daemon=True)
-        t.start()
+        print(f"[STARTUP] {t('vault_error', error=e)}", flush=True)
+        _t = threading.Thread(target=_background_index, daemon=True)
+        _t.start()
 
     try:
         start_watcher()
@@ -231,7 +232,7 @@ async def lifespan(app: FastAPI):
     threading.Timer(15, _update_crisproff_index).start()
     _schedule_graph_updates()
 
-    print("[STARTUP] Server ready", flush=True)
+    print(f"[STARTUP] {t('server_ready')}", flush=True)
     yield
 
     # Shutdown

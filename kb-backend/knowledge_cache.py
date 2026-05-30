@@ -8,6 +8,7 @@ import time
 import threading
 from typing import Dict, List, Optional
 from config import CHROMA_PATH
+from locale import t
 
 CACHE_FILE = os.path.join(CHROMA_PATH, "knowledge_cache.json")
 MAX_CACHE_SIZE = 500

@@ -10,6 +10,7 @@ import time
 import threading
 from typing import Dict, List, Set, Tuple, Optional
 from config import VAULT_PATH, TOP_K
+from locale import t
 
 # 全局知识图谱缓存
 _graph: Dict[str, Dict] = {}
@@ -107,7 +108,7 @@ def get_graph(force_rebuild: bool = False) -> Dict[str, Dict]:
         if force_rebuild or not _graph or (now - _last_build > BUILD_INTERVAL):
             _graph = build_graph()
             _last_build = now
-            print(f"[KG] Graph built: {len(_graph)} concepts", flush=True)
+            print(f"[KG] {t('graph_built', count=len(_graph))}", flush=True)
         return _graph
 
 

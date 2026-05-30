@@ -4,6 +4,7 @@ from vectorstore import query, keyword_search, collection
 from config import TOP_K
 from knowledge_cache import get_cached_answer, cache_answer
 from kg_retriever import get_context_for_query
+from locale import t
 
 # Question patterns to strip for keyword matching
 QUESTION_PREFIX = re.compile(r'^(什么是|请介绍|请解释|帮我查|告诉我|讲讲|说说|聊聊)')
@@ -77,7 +78,7 @@ def retrieve_for_chat(query_text: str) -> Dict:
     # 1. 检查缓存
     cached = get_cached_answer(query_text)
     if cached:
-        print(f"[CACHE] Hit: {query_text[:30]}...", flush=True)
+        print(f"[CACHE] {t('cache_hit', query=query_text[:30])}", flush=True)
         return {
             "context": cached['answer'],
             "sources": cached.get('sources', []),

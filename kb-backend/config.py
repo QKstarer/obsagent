@@ -1,6 +1,10 @@
 import os
 from pathlib import Path
 
+# ─── 语言设置 ───
+# 可选值: "zh" | "en"
+LANG = os.environ.get("LANG", "zh").lower()
+
 VAULT_PATH = os.environ.get("OBSIDIAN_VAULT", "")
 CHROMA_PATH = os.environ.get("CHROMA_PATH", os.path.join(os.path.dirname(__file__), "chroma_db"))
 
