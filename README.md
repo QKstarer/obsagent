@@ -72,7 +72,7 @@ KB Assistant is a full-cycle knowledge management plugin for Obsidian, powered b
 | Backend | Python + FastAPI |
 | Vector DB | ChromaDB |
 | Embeddings | nomic-embed-text / bge-m3 |
-| LLM | qwen2.5:7b / DeepSeek-R1 |
+| LLM | deepseek-r1 (Ollama 本地 / DeepSeek API) |
 | File Watch | watchdog |
 
 ### Quick Start
@@ -81,7 +81,7 @@ KB Assistant is a full-cycle knowledge management plugin for Obsidian, powered b
 
 ```bash
 # 1. Pull models
-ollama pull qwen2.5:7b
+ollama pull deepseek-r1:7b
 ollama pull nomic-embed-text
 
 # 2. Install plugin: copy kb-plugin/ to <Vault>/.obsidian/plugins/kb-plugin/
@@ -98,7 +98,7 @@ python main.py
 |-------------|---------|-------------|
 | `OBSIDIAN_VAULT` | *(required)* | Vault path |
 | `LLM_PROVIDER` | `auto` | `ollama` / `siliconflow` / `deepseek` / `auto` |
-| `OLLAMA_LLM` | `qwen2.5:7b` | Chat model |
+| `OLLAMA_LLM` | `deepseek-r1:7b` | Chat model |
 | `OLLAMA_EMBED` | `nomic-embed-text` | Embedding model |
 | `SILICONFLOW_KEY` | *(empty)* | Cloud API key |
 | `CHUNK_SIZE` | `500` | Text chunk size |
@@ -162,7 +162,7 @@ KB Assistant 不只是问答工具——它是 Obsidian 的全流程知识管理
 | 后端服务 | Python + FastAPI |
 | 向量数据库 | ChromaDB |
 | 嵌入模型 | nomic-embed-text (Ollama) / bge-m3 (SiliconFlow) |
-| 大语言模型 | qwen2.5:7b (Ollama) / DeepSeek-R1 (SiliconFlow) |
+| 大语言模型 | deepseek-r1 (Ollama 本地 / DeepSeek API) |
 | 文件监控 | watchdog |
 
 ### 快速开始
@@ -171,7 +171,7 @@ KB Assistant 不只是问答工具——它是 Obsidian 的全流程知识管理
 
 ```bash
 # 1. 拉取模型
-ollama pull qwen2.5:7b
+ollama pull deepseek-r1:7b
 ollama pull nomic-embed-text
 
 # 2. 安装插件：复制 kb-plugin/ 到 <Vault>/.obsidian/plugins/kb-plugin/
@@ -188,7 +188,7 @@ python main.py
 |---------|--------|------|
 | `OBSIDIAN_VAULT` | *(必须设置)* | Vault 路径 |
 | `LLM_PROVIDER` | `auto` | `ollama` / `siliconflow` / `deepseek` / `auto` |
-| `OLLAMA_LLM` | `qwen2.5:7b` | 聊天模型 |
+| `OLLAMA_LLM` | `deepseek-r1:7b` | 聊天模型 |
 | `OLLAMA_EMBED` | `nomic-embed-text` | 嵌入模型 |
 | `SILICONFLOW_KEY` | *(空)* | SiliconFlow 密钥 |
 | `DEEPSEEK_KEY` | *(空)* | DeepSeek 官方密钥 |
