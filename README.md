@@ -97,7 +97,7 @@ python main.py
 | Env Variable | Default | Description |
 |-------------|---------|-------------|
 | `OBSIDIAN_VAULT` | *(required)* | Vault path |
-| `LLM_PROVIDER` | `auto` | `ollama` / `siliconflow` / `auto` |
+| `LLM_PROVIDER` | `auto` | `ollama` / `siliconflow` / `deepseek` / `auto` |
 | `OLLAMA_LLM` | `qwen2.5:7b` | Chat model |
 | `OLLAMA_EMBED` | `nomic-embed-text` | Embedding model |
 | `SILICONFLOW_KEY` | *(empty)* | Cloud API key |
@@ -187,10 +187,12 @@ python main.py
 | 环境变量 | 默认值 | 说明 |
 |---------|--------|------|
 | `OBSIDIAN_VAULT` | *(必须设置)* | Vault 路径 |
-| `LLM_PROVIDER` | `auto` | `ollama` / `siliconflow` / `auto` |
+| `LLM_PROVIDER` | `auto` | `ollama` / `siliconflow` / `deepseek` / `auto` |
 | `OLLAMA_LLM` | `qwen2.5:7b` | 聊天模型 |
 | `OLLAMA_EMBED` | `nomic-embed-text` | 嵌入模型 |
-| `SILICONFLOW_KEY` | *(空)* | 云端 API 密钥 |
+| `SILICONFLOW_KEY` | *(空)* | SiliconFlow 密钥 |
+| `DEEPSEEK_KEY` | *(空)* | DeepSeek 官方密钥 |
+| `DEEPSEEK_MODEL` | `deepseek-chat` | DeepSeek 模型 |
 | `CHUNK_SIZE` | `500` | 文本分块大小 |
 | `TOP_K` | `5` | 搜索结果数量 |
 
@@ -198,8 +200,9 @@ python main.py
 
 ```bash
 set LLM_PROVIDER=ollama        # 仅本地
-set LLM_PROVIDER=siliconflow   # 仅云端
-set LLM_PROVIDER=auto          # 自动（优先本地）
+set LLM_PROVIDER=siliconflow   # SiliconFlow 云端
+set LLM_PROVIDER=deepseek      # DeepSeek 官方 API
+set LLM_PROVIDER=auto          # 自动（Ollama → SF → DeepSeek）
 ```
 
 | 聊天模型 | 嵌入模型 |
