@@ -149,7 +149,7 @@ python main.py
 | Feature | Trigger | Description |
 |---------|---------|-------------|
 | Incremental Index | File change | 10s debounce, auto-update vectors |
-| KG Build | Every 5 min | Auto-rebuild concept networks |
+| KG Build | 30s check | Incremental update on file changes |
 | Cache | Every query | Frequently asked Q&A cached |
 | Conflict Detection | On startup | Scan note contradictions |
 | Progress Report | Weekly | Statistics and report |
@@ -166,9 +166,10 @@ obsagent/
 ├── kb-backend/               # Python Backend
 │   ├── main.py               # FastAPI (30+ endpoints)
 │   ├── config.py             # Configuration
+│   ├── locale.py             # i18n (zh/en)
 │   ├── llm.py                # LLM providers (Ollama/SF/DeepSeek)
 │   ├── retriever.py          # RAG + KG + Cache pipeline
-│   ├── kg_retriever.py       # Knowledge graph retrieval
+│   ├── kg_retriever.py       # Knowledge graph (incremental)
 │   ├── knowledge_cache.py    # Q&A cache
 │   ├── vectorstore.py        # ChromaDB
 │   ├── embeddings.py         # Embedding models
@@ -183,9 +184,17 @@ obsagent/
 │   ├── failure_tracker.py    # Failure extraction
 │   ├── image_processor.py    # Image processing
 │   └── requirements.txt
+├── locales/                  # Language files
+│   ├── zh/                   # Chinese
+│   │   ├── README.md
+│   │   ├── system_prompt.txt
+│   │   └── install.bat
+│   └── en/                   # English
+│       ├── README.md
+│       ├── system_prompt.txt
+│       └── install.bat
 ├── docs/                     # GitHub Pages
 ├── README.md
-├── README_CN.md              # 中文文档
 ├── LICENSE                   # Apache 2.0
 └── .gitignore
 ```
