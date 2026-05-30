@@ -62,6 +62,28 @@ python main.py
 
 > 不需要显卡，Ollama 走 CPU 推理。
 
+### 大模型适配
+
+| 接入方式 | 配置 | 适合场景 |
+|---------|------|---------|
+| **Ollama**（默认） | 安装 Ollama，拉取模型 | 隐私、离线、零成本 |
+| **DeepSeek** | `set DEEPSEEK_KEY=sk-xxx` | 中文推理最强 |
+| **SiliconFlow** | `set SILICONFLOW_KEY=sk-xxx` | 多模型云端 |
+| **自动** | `set LLM_PROVIDER=auto` | 回退链：Ollama → SF → DeepSeek |
+
+```bash
+# 纯本地（免费、隐私）
+set LLM_PROVIDER=ollama
+set OLLAMA_LLM=deepseek-r1:7b
+
+# 纯云端（按量付费）
+set LLM_PROVIDER=deepseek
+set DEEPSEEK_KEY=sk-your-key
+
+# 混合（本地优先，云端兜底）
+set LLM_PROVIDER=auto
+```
+
 ### License
 
 [Apache 2.0](../../LICENSE)
