@@ -1,0 +1,9 @@
+{
+  "id": "kb-assistant",
+  "name": "知识库助手",
+  "version": "1.0.0",
+  "minAppVersion": "1.0.0",
+  "description": "基于本地大模型的智能知识库问答系统",
+  "author": "Paperbell",
+  "isDesktopOnly": true
+}
