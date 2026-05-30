@@ -186,4 +186,4 @@ obsagent/
 
 ## License
 
-个人项目，未经许可不得转载。
+[Apache 2.0](LICENSE) — 开源，可自由使用和修改，需保留版权声明。
