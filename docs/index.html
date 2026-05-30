@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KB Assistant - Obsidian 知识库助手</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #7C3AED;
+            --primary-light: #A78BFA;
+            --bg: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --text: #e2e8f0;
+            --text-dim: #94a3b8;
+            --accent: #22d3ee;
+            --border: #2d2d44;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            background: radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.15) 0%, transparent 60%);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+        }
+
+        .hero-badge span { color: var(--accent); }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, var(--primary-light) 50%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin-bottom: 2.5rem;
+        }
+
+        .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-primary:hover { background: #6d28d9; transform: translateY(-2px); }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-outline:hover { border-color: var(--primary-light); background: rgba(124,58,237,0.1); }
+
+        /* Features */
+        .features {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .features .subtitle {
+            text-align: center;
+            color: var(--text-dim);
+            margin-bottom: 4rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(124,58,237,0.15);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        /* Architecture */
+        .architecture {
+            padding: 6rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .architecture h2 {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 3rem;
+        }
+
+        .arch-diagram {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            color: var(--text-dim);
+        }
+
+        .arch-diagram .highlight { color: var(--accent); }
+        .arch-diagram .purple { color: var(--primary-light); }
+
+        /* Tech Stack */
+        .stack {
+            padding: 6rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .stack h2 {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .stack-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .stack-item:hover { border-color: var(--primary); }
+
+        .stack-item .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .stack-item h4 { font-size: 1rem; margin-bottom: 0.3rem; }
+        .stack-item p { font-size: 0.8rem; color: var(--text-dim); }
+
+        /* Quick Start */
+        .quickstart {
+            padding: 6rem 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .quickstart h2 {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 3rem;
+        }
+
+        .step {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 { margin-bottom: 0.5rem; }
+        .step-content p { color: var(--text-dim); font-size: 0.95rem; }
+
+        .code-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            margin-top: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            overflow-x: auto;
+        }
+
+        /* Models */
+        .models {
+            padding: 6rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .models h2 {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .models .subtitle {
+            text-align: center;
+            color: var(--text-dim);
+            margin-bottom: 3rem;
+        }
+
+        .model-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .model-table th {
+            background: rgba(124,58,237,0.15);
+            padding: 1rem;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .model-table td {
+            padding: 0.8rem 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        .model-table tr:hover td { background: rgba(124,58,237,0.05); }
+
+        .tag {
+            display: inline-block;
+            padding: 0.15rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .tag-rec { background: rgba(34,211,238,0.15); color: var(--accent); }
+        .tag-fast { background: rgba(34,197,94,0.15); color: #22c55e; }
+        .tag-strong { background: rgba(251,146,60,0.15); color: #fb923c; }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+
+        footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-badge">
+        <span>🤖</span> Powered by Local LLM
+    </div>
+    <h1>KB Assistant</h1>
+    <p>基于本地大语言模型的 Obsidian 知识库智能问答插件。你的笔记，AI 来回答。</p>
+    <div class="btn-group">
+        <a href="https://github.com/QKstarer/obsagent" class="btn btn-primary">⭐ GitHub</a>
+        <a href="#quickstart" class="btn btn-outline">快速开始</a>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="features">
+    <h2>功能特性</h2>
+    <p class="subtitle">让知识库真正"活"起来</p>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="feature-icon">💬</div>
+            <h3>智能问答</h3>
+            <p>基于 RAG 技术，AI 严格依据你的知识库内容回答问题，自动引用来源，杜绝幻觉。</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🔍</div>
+            <h3>混合检索</h3>
+            <p>向量语义搜索 + 关键词精确匹配，双引擎融合，精准定位相关内容。</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>自动索引</h3>
+            <p>监控文件变更，自动更新向量数据库。新增或修改笔记后立即可搜索。</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🧠</div>
+            <h3>知识图谱</h3>
+            <p>可视化概念关联关系，发现笔记之间的隐藏联系。</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⚠️</div>
+            <h3>冲突检测</h3>
+            <p>自动检测概念卡片之间的矛盾，帮你维护知识的一致性。</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📥</div>
+            <h3>快速捕获</h3>
+            <p>收件箱模式，快速记录灵感和想法，后续自动分类整理。</p>
+        </div>
+    </div>
+</section>
+
+<!-- Architecture -->
+<section class="architecture">
+    <h2>系统架构</h2>
+    <div class="arch-diagram">
+<pre>
+┌─────────────────────────┐      HTTP       ┌─────────────────────────┐
+│                         │ ◄─────────────► │                         │
+│   <span class="purple">Obsidian Plugin</span>        │                 │   <span class="highlight">Python Backend</span>         │
+│   <span style="color:#94a3b8">TypeScript + API</span>       │                 │   <span style="color:#94a3b8">FastAPI + RAG</span>          │
+│                         │                 │                         │
+│  ┌───────────────────┐  │   POST /api/    │  ┌───────────────────┐  │
+│  │   Chat UI Panel    │  │     chat       │  │   Retriever       │  │
+│  │   Sidebar + Modal  │  │ ────────────── │  │   Vector + KW     │  │
+│  └───────────────────┘  │                 │  └────────┬──────────┘  │
+│                         │                 │           │             │
+│  ┌───────────────────┐  │   POST /api/    │  ┌────────▼──────────┐  │
+│  │   Command Palette  │  │     index      │  │   ChromaDB        │  │
+│  │   Quick Actions    │  │ ────────────── │  │   Vector Store    │  │
+│  └───────────────────┘  │                 │  └───────────────────┘  │
+│                         │                 │                         │
+└─────────────────────────┘                 │  ┌───────────────────┐  │
+                                            │  │   Ollama / SF     │  │
+                                            │  │   LLM + Embed     │  │
+                                            │  └───────────────────┘  │
+                                            └─────────────────────────┘
+</pre>
+    </div>
+</section>
+
+<!-- Tech Stack -->
+<section class="stack">
+    <h2>技术栈</h2>
+    <div class="stack-grid">
+        <div class="stack-item">
+            <div class="icon">📦</div>
+            <h4>Obsidian API</h4>
+            <p>前端插件</p>
+        </div>
+        <div class="stack-item">
+            <div class="icon">⚡</div>
+            <h4>FastAPI</h4>
+            <p>后端服务</p>
+        </div>
+        <div class="stack-item">
+            <div class="icon">🔢</div>
+            <h4>ChromaDB</h4>
+            <p>向量数据库</p>
+        </div>
+        <div class="stack-item">
+            <div class="icon">🦙</div>
+            <h4>Ollama</h4>
+            <p>本地推理</p>
+        </div>
+        <div class="stack-item">
+            <div class="icon">🌐</div>
+            <h4>SiliconFlow</h4>
+            <p>云端备选</p>
+        </div>
+        <div class="stack-item">
+            <div class="icon">🐍</div>
+            <h4>Python 3.9+</h4>
+            <p>后端语言</p>
+        </div>
+    </div>
+</section>
+
+<!-- Models -->
+<section class="models">
+    <h2>支持模型</h2>
+    <p class="subtitle">灵活切换，按需选择</p>
+    <table class="model-table">
+        <thead>
+            <tr>
+                <th>模型</th>
+                <th>类型</th>
+                <th>特点</th>
+                <th>推荐场景</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>qwen2.5:3b</code></td>
+                <td>聊天</td>
+                <td><span class="tag tag-fast">最快</span></td>
+                <td>低配机器、快速响应</td>
+            </tr>
+            <tr>
+                <td><code>qwen2.5:7b</code></td>
+                <td>聊天</td>
+                <td><span class="tag tag-rec">推荐</span></td>
+                <td>均衡性能，默认选择</td>
+            </tr>
+            <tr>
+                <td><code>qwen2.5:14b</code></td>
+                <td>聊天</td>
+                <td><span class="tag tag-strong">更强</span></td>
+                <td>16GB+ 内存，高质量回答</td>
+            </tr>
+            <tr>
+                <td><code>deepseek-r1:7b</code></td>
+                <td>聊天</td>
+                <td><span class="tag tag-strong">推理强</span></td>
+                <td>复杂推理、逻辑分析</td>
+            </tr>
+            <tr>
+                <td><code>nomic-embed-text</code></td>
+                <td>嵌入</td>
+                <td><span class="tag tag-rec">推荐</span></td>
+                <td>768维，轻量高效</td>
+            </tr>
+            <tr>
+                <td><code>mxbai-embed-large</code></td>
+                <td>嵌入</td>
+                <td><span class="tag tag-strong">更精确</span></td>
+                <td>1024维，更高检索精度</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- Quick Start -->
+<section class="quickstart" id="quickstart">
+    <h2>快速开始</h2>
+
+    <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+            <h3>安装 Ollama 并拉取模型</h3>
+            <p>从 <a href="https://ollama.ai" style="color:var(--accent)">ollama.ai</a> 下载安装，然后拉取模型：</p>
+            <div class="code-block">ollama pull qwen2.5:7b<br>ollama pull nomic-embed-text</div>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+            <h3>安装 Obsidian 插件</h3>
+            <p>将 <code>kb-plugin/</code> 复制到你的 vault：</p>
+            <div class="code-block">&lt;Vault&gt;/.obsidian/plugins/kb-plugin/</div>
+            <p style="margin-top:0.5rem">然后在 设置 → 第三方插件 中启用"知识库助手"</p>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+            <h3>启动后端服务</h3>
+            <div class="code-block">cd kb-backend<br>pip install -r requirements.txt<br>python main.py</div>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+            <h3>开始使用</h3>
+            <p>点击侧边栏机器人图标 🤖，输入问题，AI 基于你的知识库回答！</p>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>
+        Built with ❤️ by <a href="https://github.com/QKstarer">QKstarer</a> ·
+        <a href="https://github.com/QKstarer/obsagent">Source on GitHub</a> ·
+        MIT License
+    </p>
+</footer>
+
+</body>
+</html>
