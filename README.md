@@ -115,6 +115,19 @@ python main.py
 
 > All Ollama-supported models work. Set `OLLAMA_LLM` env var to switch.
 
+#### Lightweight Picks (Integrated GPU / No Discrete GPU)
+
+| Hardware | Model | RAM | Notes |
+|----------|-------|-----|-------|
+| 8GB RAM | `qwen2.5:3b` | ~2.5GB | Fastest, daily Q&A |
+| 8GB RAM | `deepseek-r1:1.5b` | ~1.5GB | Smallest, basic reasoning |
+| 16GB RAM | `qwen2.5:7b` | ~5GB | Balanced, **recommended** |
+| 16GB RAM | `deepseek-r1:7b` | ~5GB | Stronger reasoning |
+| 32GB RAM | `qwen2.5:14b` | ~9GB | High quality |
+| 32GB RAM | `deepseek-r1:14b` | ~9GB | Deep reasoning |
+
+> 💡 **iGPU users:** Ollama runs on CPU by default — no discrete GPU needed. 7b models respond in ~2-5s on 16GB machines.
+
 ### API Overview (30+ endpoints)
 
 | Category | Endpoints |
@@ -213,6 +226,19 @@ set LLM_PROVIDER=auto          # 自动（Ollama → SF → DeepSeek）
 | `gemma2:9b` · `phi3:3.8b` · `...` | `gte-qwen2` (SiliconFlow) |
 
 > 所有 Ollama 支持的模型均可使用，设置 `OLLAMA_LLM` 环境变量即可切换。
+
+#### 轻量化推荐（核显 / 无独显 / 低内存）
+
+| 硬件配置 | 推荐模型 | 内存占用 | 说明 |
+|----------|----------|----------|------|
+| 8GB 内存 | `qwen2.5:3b` | ~2.5GB | 最快，日常问答够用 |
+| 8GB 内存 | `deepseek-r1:1.5b` | ~1.5GB | 最小，推理弱但极快 |
+| 16GB 内存 | `qwen2.5:7b` | ~5GB | 均衡，推荐首选 |
+| 16GB 内存 | `deepseek-r1:7b` | ~5GB | 推理更强 |
+| 32GB 内存 | `qwen2.5:14b` | ~9GB | 高质量回答 |
+| 32GB 内存 | `deepseek-r1:14b` | ~9GB | 深度推理 |
+
+> 💡 **核显用户：** Ollama 默认 CPU 推理，核显不影响。7b 模型在 16GB 机器上响应约 2-5 秒/句，完全可用。内存不够用 `3b` 或 `1.5b` 即可流畅运行。
 
 ### API 概览（30+ 端点）
 
