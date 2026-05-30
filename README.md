@@ -191,14 +191,10 @@ set LLM_PROVIDER=siliconflow   # 仅云端
 set LLM_PROVIDER=auto          # 自动（优先本地）
 ```
 
-| 模型 | 类型 | 场景 |
-|------|------|------|
-| `qwen2.5:3b` | 聊天 | 最快，低配 |
-| `qwen2.5:7b` | 聊天 | 均衡，**默认** |
-| `qwen2.5:14b` | 聊天 | 最强，16GB+ |
-| `deepseek-r1:7b` | 聊天 | 推理强 |
-| `nomic-embed-text` | 嵌入 | 轻量 768d |
-| `mxbai-embed-large` | 嵌入 | 精确 1024d |
+| 聊天模型 | 嵌入模型 |
+|----------|----------|
+| `qwen2.5:3b` · `7b` · `14b` | `nomic-embed-text` (768d) |
+| `deepseek-r1:7b` | `mxbai-embed-large` (1024d) |
 
 ### API 概览（30+ 端点）
 
