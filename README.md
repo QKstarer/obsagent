@@ -32,10 +32,7 @@ KB Assistant is a full-cycle knowledge management plugin for Obsidian, powered b
 | **✍️ Writing Assistant** | Generate methods, results, discussion sections |
 | **📈 Progress Tracker** | Weekly work statistics and report generation |
 | **🖼️ Image Processing** | Extract text from images to documents |
-| **🧪 CRISPRoff KB** | Specialized gene editing knowledge base |
-| **🧬 sgRNA Manager** | Design and track sgRNA records |
-| **🔬 BSP Analysis** | Bisulfite sequencing analysis pipeline |
-| **💡 Failure Tracker** | Auto-extract experiment failures from Q&A |
+| **💡 Failure Tracker** | Auto-extract failures from Q&A |
 | **💬 Conversation Log** | Auto-save all chats with sources |
 
 ### Architecture
@@ -277,7 +274,6 @@ obsagent/
 │   ├── watcher.py          # 文件监控
 │   ├── knowledge_graph.py  # 知识图谱
 │   ├── conflict_detector.py# 冲突检测
-│   ├── entity_recognizer.py# 实体识别
 │   ├── content_classifier.py# 内容分类
 │   ├── writing_assistant.py# 写作助手
 │   ├── progress_tracker.py # 进度追踪
