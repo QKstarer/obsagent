@@ -120,6 +120,28 @@ python main.py
 
 > All Ollama models supported. Set `OLLAMA_LLM` to switch.
 
+### LLM Provider Adaptation
+
+| Provider | Setup | Best For |
+|----------|-------|----------|
+| **Ollama** (default) | Install Ollama, pull model | Privacy, offline, no API cost |
+| **DeepSeek** | `set DEEPSEEK_KEY=sk-xxx` | Best Chinese reasoning |
+| **SiliconFlow** | `set SILICONFLOW_KEY=sk-xxx` | Multi-model cloud access |
+| **Auto** | `set LLM_PROVIDER=auto` | Fallback chain: Ollama → SF → DeepSeek |
+
+```bash
+# Local only (free, private)
+set LLM_PROVIDER=ollama
+set OLLAMA_LLM=deepseek-r1:7b
+
+# Cloud only (pay per use)
+set LLM_PROVIDER=deepseek
+set DEEPSEEK_KEY=sk-your-key
+
+# Hybrid (local first, cloud fallback)
+set LLM_PROVIDER=auto
+```
+
 #### Lightweight Picks (iGPU / No Discrete GPU)
 
 | Hardware | Model | RAM | Notes |

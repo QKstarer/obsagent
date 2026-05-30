@@ -15,7 +15,7 @@ CHROMA_PATH = os.environ.get("CHROMA_PATH", os.path.join(os.path.dirname(__file_
 
 # ─── Ollama (本地推理) ───
 OLLAMA_BASE = os.environ.get("OLLAMA_BASE", "http://localhost:11434")
-OLLAMA_LLM = os.environ.get("OLLAMA_LLM", "qwen2.5:7b")
+OLLAMA_LLM = os.environ.get("OLLAMA_LLM", "deepseek-r1:7b")
 OLLAMA_EMBED = os.environ.get("OLLAMA_EMBED", "nomic-embed-text")
 
 # ─── SiliconFlow (云端备选) ───
