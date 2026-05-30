@@ -163,6 +163,15 @@ KB Assistant 不只是问答工具——它是 Obsidian 的全流程知识管理
 | **💡 失败追踪** | 从问答中自动提取失败案例 |
 | **💬 对话日志** | 所有问答自动保存，含来源引用 |
 
+#### 可选领域模块
+
+| 模块 | 说明 |
+|------|------|
+| **🧬 CRISPRoff 库** | 基因编辑专业知识库 |
+| **🧪 sgRNA 管理** | sgRNA 设计与记录追踪 |
+| **🔬 BSP 分析** | 亚硫酸氢盐测序分析流水线 |
+| **🔗 实体识别** | 自动识别基因、蛋白、技术，生成 `[[双向链接]]` |
+
 ### 技术栈
 
 | 组件 | 技术 |
@@ -245,6 +254,7 @@ set LLM_PROVIDER=auto          # 自动（Ollama → SF → DeepSeek）
 | 写作 | `/api/writing/methods`, `/api/writing/results`, `/api/writing/discussion` |
 | 知识 | `/api/graph/*`, `/api/conflicts`, `/api/output/*` |
 | 系统 | `/api/health`, `/api/status`, `/api/progress/*`, `/api/logs` |
+| 领域 *(可选)* | `/api/sgrna/*`, `/api/bsp/*`, `/api/crisproff/*`, `/api/entities/*` |
 
 ### 自动化功能
 
@@ -284,6 +294,10 @@ obsagent/
 │   ├── conversation_saver.py# 对话保存
 │   ├── failure_tracker.py  # 失败追踪
 │   ├── image_processor.py  # 图片处理
+│   ├── entity_recognizer.py# 实体识别（可选）
+│   ├── sgrna_manager.py    # sgRNA 管理（可选）
+│   ├── bsp_analysis.py     # BSP 分析（可选）
+│   ├── crisproff_kb.py     # CRISPRoff 库（可选）
 │   └── requirements.txt    # Python 依赖
 ├── docs/                   # GitHub Pages
 ├── README.md
