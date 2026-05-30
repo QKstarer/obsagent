@@ -155,16 +155,12 @@ KB Assistant 不只是问答工具——它是 Obsidian 的全流程知识管理
 | **📝 引导输入** | 交互式向导，按模板创建实验记录、文献笔记等 |
 | **📥 快速捕获** | 收件箱模式，随时记录灵感 |
 | **🏷️ 自动分类** | 内容分类 + 标签推荐 |
-| **🔗 实体识别** | 自动识别基因、蛋白、技术，生成 `[[双向链接]]` |
 | **⚠️ 冲突检测** | 发现概念卡片间的矛盾信息 |
 | **📊 知识图谱** | Mermaid 可视化概念关联 |
 | **✍️ 写作助手** | AI 生成方法、结果、讨论章节 |
 | **📈 进度追踪** | 本周工作统计 + 自动周报 |
 | **🖼️ 图片处理** | 图片文字提取，自动转为笔记 |
-| **🧪 CRISPRoff 库** | 基因编辑专业知识库 |
-| **🧬 sgRNA 管理** | sgRNA 设计与记录追踪 |
-| **🔬 BSP 分析** | 亚硫酸氢盐测序分析流水线 |
-| **💡 失败追踪** | 从问答中自动提取实验失败案例 |
+| **💡 失败追踪** | 从问答中自动提取失败案例 |
 | **💬 对话日志** | 所有问答自动保存，含来源引用 |
 
 ### 技术栈
@@ -245,10 +241,9 @@ set LLM_PROVIDER=auto          # 自动（Ollama → SF → DeepSeek）
 | 分类 | 端点 |
 |------|------|
 | 核心 | `/api/chat`, `/api/chat/stream`, `/api/search`, `/api/index` |
-| 内容 | `/api/classify`, `/api/entities/*`, `/api/links/*` |
+| 内容 | `/api/classify`, `/api/links/*` |
 | 写作 | `/api/writing/methods`, `/api/writing/results`, `/api/writing/discussion` |
 | 知识 | `/api/graph/*`, `/api/conflicts`, `/api/output/*` |
-| 领域 | `/api/sgrna/*`, `/api/bsp/*`, `/api/crisproff/*` |
 | 系统 | `/api/health`, `/api/status`, `/api/progress/*`, `/api/logs` |
 
 ### 自动化功能
@@ -259,7 +254,7 @@ set LLM_PROVIDER=auto          # 自动（Ollama → SF → DeepSeek）
 | 内容处理 | 新文件创建 | 自动分类、提取知识点 |
 | 冲突检测 | 启动 30s 后 | 扫描概念卡片矛盾 |
 | 知识图谱 | 每 6 小时 | 更新概念关联可视化 |
-| 失败提取 | 每次问答后 | 从对话中提取实验失败案例 |
+| 失败提取 | 每次问答后 | 从对话中提取失败案例 |
 | 对话保存 | 每次问答后 | 保存到 `01_输入区/对话记录/` |
 
 ### 目录结构
@@ -289,9 +284,6 @@ obsagent/
 │   ├── conversation_saver.py# 对话保存
 │   ├── failure_tracker.py  # 失败追踪
 │   ├── image_processor.py  # 图片处理
-│   ├── sgrna_manager.py    # sgRNA 管理
-│   ├── bsp_analysis.py     # BSP 分析
-│   ├── crisproff_kb.py     # CRISPRoff 知识库
 │   └── requirements.txt    # Python 依赖
 ├── docs/                   # GitHub Pages
 ├── README.md
