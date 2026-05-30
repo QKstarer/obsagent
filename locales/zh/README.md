@@ -62,6 +62,17 @@ python main.py
 
 > 不需要显卡，Ollama 走 CPU 推理。
 
+### 支持模型
+
+| 聊天模型 | 嵌入模型 |
+|----------|----------|
+| `qwen2.5:3b/7b/14b/32b/72b` | `nomic-embed-text` (768d) |
+| `deepseek-r1:1.5b/7b/14b/32b/70b` | `mxbai-embed-large` (1024d) |
+| `llama3.1:8b/70b` · `mistral:7b` | `bge-m3` (SiliconFlow) |
+| `gemma2:9b` · `phi3:3.8b` · ... | `gte-qwen2` (SiliconFlow) |
+
+> 所有 Ollama 支持的模型均可使用，设置 `OLLAMA_LLM` 环境变量即可切换。
+
 ### 大模型适配
 
 | 接入方式 | 配置 | 适合场景 |

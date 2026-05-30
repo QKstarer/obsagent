@@ -50,6 +50,17 @@ python main.py
 | `DEEPSEEK_KEY` | *(empty)* | DeepSeek API key |
 | `GRAPH_SAVE_TO_VAULT` | `false` | Save graph to vault |
 
+### Supported Models
+
+| Chat | Embed |
+|------|-------|
+| `qwen2.5:3b/7b/14b/32b/72b` | `nomic-embed-text` (768d) |
+| `deepseek-r1:1.5b/7b/14b/32b/70b` | `mxbai-embed-large` (1024d) |
+| `llama3.1:8b/70b` · `mistral:7b` | `bge-m3` (SiliconFlow) |
+| `gemma2:9b` · `phi3:3.8b` · ... | `gte-qwen2` (SiliconFlow) |
+
+> All Ollama models supported. Set `OLLAMA_LLM` to switch.
+
 ### Lightweight Picks
 
 | RAM | Model | Usage |
