@@ -28,6 +28,7 @@ from bsp_analysis import get_analysis_scripts, create_analysis_entry, record_ana
 from writing_assistant import generate_methods_section, generate_results_section, generate_discussion_section, save_writing, get_writing_stats
 from knowledge_graph import save_knowledge_graph, get_graph_stats
 from kg_retriever import get_graph_stats as get_kg_stats, get_graph as get_kg_graph
+from config import GRAPH_SAVE_TO_VAULT
 from knowledge_cache import get_cache_stats, clear_cache
 from image_processor import process_image_to_document, process_multiple_images
 from entity_recognizer import recognize_entities, find_related_notes, generate_links
@@ -230,7 +231,10 @@ async def lifespan(app: FastAPI):
     threading.Timer(30, detect_conflicts_background).start()
     threading.Timer(10, _update_global_index).start()
     threading.Timer(15, _update_crisproff_index).start()
-    _schedule_graph_updates()
+    if GRAPH_SAVE_TO_VAULT:
+        _schedule_graph_updates()
+    else:
+        print(f"[STARTUP] Graph auto-save disabled (set GRAPH_SAVE_TO_VAULT=true to enable)", flush=True)
 
     print(f"[STARTUP] {t('server_ready')}", flush=True)
     yield

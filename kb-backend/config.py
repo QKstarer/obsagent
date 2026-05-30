@@ -5,6 +5,11 @@ from pathlib import Path
 # 可选值: "zh" | "en"
 LANG = os.environ.get("LANG", "zh").lower()
 
+# ─── 知识图谱自动写入 vault ───
+# true  — 每6小时自动在 vault 中生成 .md 图谱文件（会创建文件）
+# false — 仅内存中构建，不写入 vault（默认，推荐）
+GRAPH_SAVE_TO_VAULT = os.environ.get("GRAPH_SAVE_TO_VAULT", "false").lower() == "true"
+
 VAULT_PATH = os.environ.get("OBSIDIAN_VAULT", "")
 CHROMA_PATH = os.environ.get("CHROMA_PATH", os.path.join(os.path.dirname(__file__), "chroma_db"))
 
