@@ -48,6 +48,7 @@ python main.py
 | `OLLAMA_LLM` | `deepseek-r1:7b` | 聊天模型 |
 | `OLLAMA_EMBED` | `nomic-embed-text` | 嵌入模型 |
 | `DEEPSEEK_KEY` | *(空)* | DeepSeek 密钥 |
+| `SILICONFLOW_KEY` | *(空)* | SiliconFlow 密钥 |
 | `GRAPH_SAVE_TO_VAULT` | `false` | 图谱写入vault |
 
 ### 轻量化推荐
