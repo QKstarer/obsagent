@@ -2,7 +2,6 @@
 
 > 基于本地大语言模型的 Obsidian 知识库智能问答插件
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Obsidian](https://img.shields.io/badge/Obsidian-%E2%89%A5%201.0.0-7C3AED?logo=obsidian)](https://obsidian.md)
 [![Python](https://img.shields.io/badge/Python-%E2%89%A5%203.9-3776AB?logo=python)](https://python.org)
 
@@ -187,4 +186,4 @@ obsagent/
 
 ## License
 
-[MIT](LICENSE)
+个人项目，未经许可不得转载。
