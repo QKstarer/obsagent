@@ -1,20 +1,22 @@
 import httpx
+import os
 from typing import List, Dict, Generator, Optional
-from config import OLLAMA_BASE, OLLAMA_LLM, SILICONFLOW_API, SILICONFLOW_KEY, SILICONFLOW_LLM_MODEL, LLM_PROVIDER, DEEPSEEK_API, DEEPSEEK_KEY, DEEPSEEK_MODEL
+from config import OLLAMA_BASE, OLLAMA_LLM, SILICONFLOW_API, SILICONFLOW_KEY, SILICONFLOW_LLM_MODEL, LLM_PROVIDER, DEEPSEEK_API, DEEPSEEK_KEY, DEEPSEEK_MODEL, LANG
 
-SYSTEM_PROMPT = """你是一个基于知识库的智能助手。你的唯一知识来源是下方提供的【知识库内容】。
 
-核心规则：
-1. 你必须严格基于【知识库内容】来回答问题，不要使用你自己的知识
-2. 如果知识库中有相关内容，必须引用来源，格式：[来源: 文件名]
-3. 如果知识库中没有相关内容，直接说"知识库中未找到相关信息"
-4. 回答使用中文
-5. 不要编造或推测知识库中没有的信息
+def _load_system_prompt() -> str:
+    """Load system prompt from locales/<lang>/system_prompt.txt"""
+    prompt_path = os.path.join(
+        os.path.dirname(__file__), "..", "locales", LANG, "system_prompt.txt"
+    )
+    try:
+        with open(prompt_path, "r", encoding="utf-8") as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return "You are a knowledge base assistant. Answer based on the provided knowledge base content."
 
-回答风格：
-- 简洁准确，避免冗余
-- 使用结构化格式（标题、列表、表格）
-- 如有相关概念，使用 [[双向链接]] 格式引用"""
+
+SYSTEM_PROMPT = _load_system_prompt()
 
 
 async def chat_ollama(messages: List[Dict]) -> str:
