@@ -341,7 +341,7 @@
         <span>🤖</span> Powered by Local LLM
     </div>
     <h1>KB Assistant</h1>
-    <p>基于本地大语言模型的 Obsidian 知识库智能问答插件。你的笔记，AI 来回答。</p>
+    <p>基于本地大语言模型的 Obsidian 知识管理全流程插件。不只是问答，更是你的知识管理助手。</p>
     <div class="btn-group">
         <a href="https://github.com/QKstarer/obsagent" class="btn btn-primary">⭐ GitHub</a>
         <a href="#quickstart" class="btn btn-outline">快速开始</a>
@@ -350,8 +350,8 @@
 
 <!-- Features -->
 <section class="features">
-    <h2>功能特性</h2>
-    <p class="subtitle">让知识库真正"活"起来</p>
+    <h2>功能全景</h2>
+    <p class="subtitle">不只是问答——全流程知识管理</p>
     <div class="feature-grid">
         <div class="feature-card">
             <div class="feature-icon">💬</div>
@@ -392,6 +392,16 @@
             <div class="feature-icon">🛡️</div>
             <h3>安全加固</h3>
             <p>CORS 来源限制、输入编码兼容（UTF-8/GBK）、健康检查端点，生产可用。</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">✍️</div>
+            <h3>写作助手</h3>
+            <p>AI 生成方法、结果、讨论章节，支持多种输出模板和质量评估。</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🔗</div>
+            <h3>实体识别</h3>
+            <p>自动识别基因、蛋白、技术等实体，生成 Obsidian 双向链接。</p>
         </div>
     </div>
 </section>
@@ -487,28 +497,28 @@
         </thead>
         <tbody>
             <tr>
-                <td><code>qwen2.5:3b</code></td>
-                <td>聊天</td>
-                <td><span class="tag tag-fast">最快</span></td>
-                <td>低配机器、快速响应</td>
-            </tr>
-            <tr>
-                <td><code>qwen2.5:7b</code></td>
+                <td><code>qwen2.5:3b/7b/14b/32b/72b</code></td>
                 <td>聊天</td>
                 <td><span class="tag tag-rec">推荐</span></td>
-                <td>均衡性能，默认选择</td>
+                <td>全尺寸覆盖，3b 最快，72b 最强</td>
             </tr>
             <tr>
-                <td><code>qwen2.5:14b</code></td>
-                <td>聊天</td>
-                <td><span class="tag tag-strong">更强</span></td>
-                <td>16GB+ 内存，高质量回答</td>
-            </tr>
-            <tr>
-                <td><code>deepseek-r1:7b</code></td>
+                <td><code>deepseek-r1:1.5b~70b</code></td>
                 <td>聊天</td>
                 <td><span class="tag tag-strong">推理强</span></td>
                 <td>复杂推理、逻辑分析</td>
+            </tr>
+            <tr>
+                <td><code>llama3.1:8b/70b</code> · <code>mistral:7b</code></td>
+                <td>聊天</td>
+                <td><span class="tag tag-fast">多语言</span></td>
+                <td>英文优秀，社区广泛</td>
+            </tr>
+            <tr>
+                <td><code>gemma2:9b</code> · <code>phi3:3.8b</code> · ...</td>
+                <td>聊天</td>
+                <td><span class="tag tag-fast">轻量</span></td>
+                <td>所有 Ollama 模型均支持</td>
             </tr>
             <tr>
                 <td><code>nomic-embed-text</code></td>
@@ -517,10 +527,10 @@
                 <td>768维，轻量高效</td>
             </tr>
             <tr>
-                <td><code>mxbai-embed-large</code></td>
+                <td><code>mxbai-embed-large</code> · <code>bge-m3</code></td>
                 <td>嵌入</td>
                 <td><span class="tag tag-strong">更精确</span></td>
-                <td>1024维，更高检索精度</td>
+                <td>1024维，多语言最强</td>
             </tr>
         </tbody>
     </table>
