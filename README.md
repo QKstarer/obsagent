@@ -104,6 +104,17 @@ python main.py
 | `CHUNK_SIZE` | `500` | Text chunk size |
 | `TOP_K` | `5` | Search results |
 
+### Supported Models
+
+| Chat | Embed |
+|------|-------|
+| `qwen2.5:3b/7b/14b/32b/72b` | `nomic-embed-text` (768d) |
+| `deepseek-r1:1.5b/7b/14b/32b/70b` | `mxbai-embed-large` (1024d) |
+| `llama3.1:8b/70b` · `mistral:7b` | `bge-m3` (SiliconFlow) |
+| `gemma2:9b` · `phi3:3.8b` · `...` | `gte-qwen2` (SiliconFlow) |
+
+> All Ollama-supported models work. Set `OLLAMA_LLM` env var to switch.
+
 ### API Overview (30+ endpoints)
 
 | Category | Endpoints |
@@ -193,8 +204,12 @@ set LLM_PROVIDER=auto          # 自动（优先本地）
 
 | 聊天模型 | 嵌入模型 |
 |----------|----------|
-| `qwen2.5:3b` · `7b` · `14b` | `nomic-embed-text` (768d) |
-| `deepseek-r1:7b` | `mxbai-embed-large` (1024d) |
+| `qwen2.5:3b/7b/14b/32b/72b` | `nomic-embed-text` (768d) |
+| `deepseek-r1:1.5b/7b/14b/32b/70b` | `mxbai-embed-large` (1024d) |
+| `llama3.1:8b/70b` · `mistral:7b` | `bge-m3` (SiliconFlow) |
+| `gemma2:9b` · `phi3:3.8b` · `...` | `gte-qwen2` (SiliconFlow) |
+
+> 所有 Ollama 支持的模型均可使用，设置 `OLLAMA_LLM` 环境变量即可切换。
 
 ### API 概览（30+ 端点）
 
