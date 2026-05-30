@@ -65,60 +65,27 @@ def index_vault(vault_path: str = VAULT_PATH) -> List[Dict]:
             if not fname.endswith('.md') or fname in skip_files:
                 continue
             fpath = os.path.join(root, fname)
-            try:
-                with open(fpath, 'r', encoding='utf-8') as f:
-                    content = f.read()
-            except Exception:
-                continue
-
-            meta, body = parse_frontmatter(content)
-            if not body.strip():
-                continue
-
-            title = meta.get('name', fname.replace('.md', ''))
-            tags = meta.get('tags', []) or []
-            aliases = meta.get('aliases', []) or []
-            if isinstance(tags, str):
-                tags = [tags]
-            if isinstance(aliases, str):
-                aliases = [aliases]
-            tags = [t for t in tags if isinstance(t, str)]
-            aliases = [a for a in aliases if isinstance(a, str)]
-            rel_path = os.path.relpath(fpath, vault_path).replace('\\', '/')
-
-            chunks = chunk_text(body)
-            for i, chunk in enumerate(chunks):
-                documents.append({
-                    'id': f"{rel_path}::chunk_{i}",
-                    'text': chunk,
-                    'metadata': {
-                        'source': rel_path,
-                        'title': title,
-                        'tags': ', '.join(tags) if isinstance(tags, list) else str(tags),
-                        'aliases': ', '.join(aliases) if isinstance(aliases, list) else str(aliases),
-                        'chunk_index': i,
-                        'total_chunks': len(chunks),
-                    }
-                })
+            docs = _process_file(fpath, vault_path)
+            documents.extend(docs)
 
     print(f"[INDEXER] Indexed {len(documents)} chunks from {len(set(d['metadata']['source'] for d in documents))} files")
     return documents
 
 
-def index_single_file(file_path: str, vault_path: str = VAULT_PATH) -> List[Dict]:
-    """Index a single file and return its chunks."""
+def _process_file(fpath: str, vault_path: str) -> List[Dict]:
+    """Process a single markdown file into indexed chunks."""
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(fpath, 'r', encoding='utf-8') as f:
             content = f.read()
     except Exception as e:
-        print(f"[INDEXER] Error reading {file_path}: {e}", flush=True)
+        print(f"[INDEXER] Error reading {fpath}: {e}", flush=True)
         return []
 
     meta, body = parse_frontmatter(content)
     if not body.strip():
         return []
 
-    title = meta.get('name', os.path.basename(file_path).replace('.md', ''))
+    title = meta.get('name', os.path.basename(fpath).replace('.md', ''))
     tags = meta.get('tags', []) or []
     aliases = meta.get('aliases', []) or []
     if isinstance(tags, str):
@@ -127,7 +94,7 @@ def index_single_file(file_path: str, vault_path: str = VAULT_PATH) -> List[Dict
         aliases = [aliases]
     tags = [t for t in tags if isinstance(t, str)]
     aliases = [a for a in aliases if isinstance(a, str)]
-    rel_path = os.path.relpath(file_path, vault_path).replace('\\', '/')
+    rel_path = os.path.relpath(fpath, vault_path).replace('\\', '/')
 
     chunks = chunk_text(body)
     documents = []
@@ -146,3 +113,8 @@ def index_single_file(file_path: str, vault_path: str = VAULT_PATH) -> List[Dict
         })
 
     return documents
+
+
+def index_single_file(file_path: str, vault_path: str = VAULT_PATH) -> List[Dict]:
+    """Index a single file and return its chunks."""
+    return _process_file(file_path, vault_path)

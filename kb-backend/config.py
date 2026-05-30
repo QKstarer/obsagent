@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-VAULT_PATH = os.environ.get("OBSIDIAN_VAULT", r"D:\research\Obsidian\paperbell")
+VAULT_PATH = os.environ.get("OBSIDIAN_VAULT", "")
 CHROMA_PATH = os.environ.get("CHROMA_PATH", os.path.join(os.path.dirname(__file__), "chroma_db"))
 
 # ─── Ollama (本地推理) ───

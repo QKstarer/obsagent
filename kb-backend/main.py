@@ -199,6 +199,10 @@ def _run_async(coro):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Startup — validate vault path
+    if not VAULT_PATH or not os.path.isdir(VAULT_PATH):
+        print(f"[STARTUP] WARNING: VAULT_PATH not set or invalid: '{VAULT_PATH}'", flush=True)
+        print("[STARTUP] Set OBSIDIAN_VAULT environment variable to your vault path", flush=True)
     # Startup
     try:
         stats = get_stats()
@@ -236,7 +240,13 @@ app = FastAPI(title="Obsidian KB Backend", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "app://obsidian.md",
+        "http://localhost",
+        "http://localhost:*",
+        "https://localhost",
+    ],
+    allow_origin_regex=r"^app://|^http://localhost|^https://localhost",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -268,6 +278,12 @@ async def decode_body_middleware(request: Request, call_next):
 
 
 # ---- API 端点 ----
+
+@app.get("/api/health")
+async def health():
+    """Health check endpoint for monitoring."""
+    return {"status": "ok", "vault_exists": os.path.isdir(VAULT_PATH) if VAULT_PATH else False}
+
 
 @app.get("/api/status")
 async def status():

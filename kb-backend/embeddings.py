@@ -59,4 +59,11 @@ async def get_embedding(text: str) -> List[float]:
 
 
 async def get_embeddings_batch(texts: List[str]) -> List[List[float]]:
-    return [await get_embedding(t) for t in texts]
+    import asyncio
+    semaphore = asyncio.Semaphore(4)  # Limit concurrent requests
+
+    async def _limited(text):
+        async with semaphore:
+            return await get_embedding(text)
+
+    return await asyncio.gather(*[_limited(t) for t in texts])
