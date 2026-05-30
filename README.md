@@ -6,7 +6,7 @@
 [![Python](https://img.shields.io/badge/Python-%E2%89%A5%203.9-3776AB?logo=python)](https://python.org)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
-**[中文文档](README_CN.md)**
+**[中文文档](locales/zh/README.md)** · **[English](locales/en/README.md)**
 
 ### What It Does
 
