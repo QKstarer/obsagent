@@ -26,6 +26,8 @@ from sgrna_manager import get_sgrna_stats, create_sgrna_record, search_sgrnas
 from bsp_analysis import get_analysis_scripts, create_analysis_entry, record_analysis_result, get_bsp_stats, run_methylation_analysis, record_methylation_to_vault
 from writing_assistant import generate_methods_section, generate_results_section, generate_discussion_section, save_writing, get_writing_stats
 from knowledge_graph import save_knowledge_graph, get_graph_stats
+from kg_retriever import get_graph_stats as get_kg_stats, get_graph as get_kg_graph
+from knowledge_cache import get_cache_stats, clear_cache
 from image_processor import process_image_to_document, process_multiple_images
 from entity_recognizer import recognize_entities, find_related_notes, generate_links
 from auto_linker import process_file_links, batch_process_links, scan_vault_for_entities
@@ -297,7 +299,19 @@ async def api_chat(request: Request):
     body = await request.body()
     query = _decode_body_query(body)
     result = retrieve_for_chat(query)
+
+    # 缓存命中直接返回
+    if result.get("cached"):
+        return {"answer": result["context"], "sources": result["sources"], "cached": True}
+
     answer = await chat(result["context"], query)
+
+    # 缓存新答案
+    threading.Thread(
+        target=cache_answer,
+        args=(query, answer, result["sources"]),
+        daemon=True
+    ).start()
     threading.Thread(
         target=save_conversation,
         args=(query, answer, result["sources"]),
@@ -308,7 +322,7 @@ async def api_chat(request: Request):
         target=lambda: _run_async(process_failure_from_chat(query, answer)),
         daemon=True
     ).start()
-    return {"answer": answer, "sources": result["sources"]}
+    return {"answer": answer, "sources": result["sources"], "cached": False}
 
 
 @app.post("/api/chat/stream")
@@ -476,6 +490,32 @@ async def api_writing_discussion(req: WritingRequest):
 @app.get("/api/graph")
 async def api_graph():
     return get_graph_stats()
+
+
+@app.get("/api/kg")
+async def api_kg():
+    """知识图谱统计（通用版）。"""
+    return get_kg_stats()
+
+
+@app.get("/api/kg/related")
+async def api_kg_related(concept: str = Query(...), depth: int = Query(1)):
+    """查找与概念相关的节点。"""
+    from kg_retriever import find_related
+    return {"related": find_related(concept, depth)}
+
+
+@app.get("/api/cache")
+async def api_cache():
+    """知识缓存统计。"""
+    return get_cache_stats()
+
+
+@app.post("/api/cache/clear")
+async def api_cache_clear():
+    """清空知识缓存。"""
+    clear_cache()
+    return {"status": "ok", "message": "缓存已清空"}
 
 
 @app.post("/api/graph/generate")

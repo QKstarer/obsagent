@@ -2,6 +2,8 @@ import re
 from typing import List, Dict
 from vectorstore import query, keyword_search, collection
 from config import TOP_K
+from knowledge_cache import get_cached_answer, cache_answer
+from kg_retriever import get_context_for_query
 
 # Question patterns to strip for keyword matching
 QUESTION_PREFIX = re.compile(r'^(什么是|请介绍|请解释|帮我查|告诉我|讲讲|说说|聊聊)')
@@ -57,10 +59,12 @@ def search(query_text: str, top_k: int = TOP_K) -> List[Dict]:
     return merged[:top_k]
 
 
-def build_context(results: List[Dict]) -> str:
-    if not results:
+def build_context(results: List[Dict], kg_context: str = "") -> str:
+    if not results and not kg_context:
         return "未找到相关知识。"
     parts = []
+    if kg_context:
+        parts.append(f"[知识图谱关联]\n{kg_context}")
     for i, r in enumerate(results):
         meta = r["metadata"]
         source = meta.get("source", "未知")
@@ -70,8 +74,24 @@ def build_context(results: List[Dict]) -> str:
 
 
 def retrieve_for_chat(query_text: str) -> Dict:
+    # 1. 检查缓存
+    cached = get_cached_answer(query_text)
+    if cached:
+        print(f"[CACHE] Hit: {query_text[:30]}...", flush=True)
+        return {
+            "context": cached['answer'],
+            "sources": cached.get('sources', []),
+            "cached": True,
+        }
+
+    # 2. 向量 + 关键词检索
     results = search(query_text)
-    context = build_context(results)
+
+    # 3. 知识图谱增强
+    kg_context = get_context_for_query(query_text)
+
+    # 4. 构建上下文
+    context = build_context(results, kg_context)
     sources = []
     for r in results:
         meta = r["metadata"]
@@ -81,4 +101,5 @@ def retrieve_for_chat(query_text: str) -> Dict:
             "score": round(1 - r["distance"], 4),
             "preview": r["text"][:100]
         })
-    return {"context": context, "sources": sources}
+
+    return {"context": context, "sources": sources, "cached": False}
